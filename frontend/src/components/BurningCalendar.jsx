@@ -1,0 +1,11 @@
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, BarChart, Bar, Line, Legend } from 'recharts';
+import { Zap, CalendarDays } from 'lucide-react';
+import { shortNumber, number } from '../utils/format';
+export default function BurningCalendar({ data, loading }) {
+ const peak=[...data].sort((a,b)=>b.meanDaily-a.meanDaily)[0];
+ return <section className="content-panel"><div className="panel-topline"><div><h2>Burning Activity Calendar</h2><p>{'Observed monthly hotspot totals and daily 90th-percentile reference levels'}</p></div><span className="data-pill">{loading?'Updating':'Archive-derived'}</span></div>
+  <div className="chart-card"><div className="chart-heading"><CalendarDays size={15}/> Monthly fire activity · daily mean</div><ResponsiveContainer width="100%" height={310}><AreaChart data={data} margin={{top:12,right:18,left:0,bottom:0}}><defs><linearGradient id="fireFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#f97316" stopOpacity={.35}/><stop offset="100%" stopColor="#f97316" stopOpacity={0}/></linearGradient></defs><CartesianGrid strokeDasharray="3 3" stroke="#1e293b"/><XAxis dataKey="month" stroke="#64748b" tickLine={false}/><YAxis stroke="#64748b" tickLine={false}/><Tooltip contentStyle={{background:'#0f172a',border:'1px solid #334155',borderRadius:8,color:'#e2e8f0'}}/><Legend/><Area type="monotone" dataKey="meanDaily" name="Mean daily hotspots" stroke="#fb923c" fill="url(#fireFill)" strokeWidth={2}/><Line type="monotone" dataKey="threshold90" name="90th percentile" stroke="#ef4444" strokeDasharray="5 5" dot={false}/></AreaChart></ResponsiveContainer></div>
+  <div className="month-grid">{data.map(item=><div className={`month-card ${item.anomalyDays>0?'month-alert':''}`} key={item.month}><div className="month-top"><b>{item.month}</b>{item.anomalyDays>0&&<Zap size={14}/>}</div><strong>{shortNumber(item.hotspotCount)}</strong><small>observations</small><div className="month-bar"><i style={{width:`${Math.max(2,Math.min(100,item.threshold90?item.meanDaily/item.threshold90*100:0))}%`}}/></div><small>{number(item.anomalyDays)} flagged grid-days</small></div>)}</div>
+  {peak&&<p className="insight-line">Peak observed month in this selection: <b>{peak.month}</b> with {number(peak.meanDaily)} mean daily detections. This is historical activity, not a prediction.</p>}
+ </section>;
+}

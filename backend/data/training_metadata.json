@@ -1,0 +1,31 @@
+{
+  "source_file": "fire_archive_SV-C2_829122.csv",
+  "source_sensor": "VIIRS S-NPP (SNPP)",
+  "source_rows": 14652931,
+  "date_start": "2025-01-01",
+  "date_end": "2025-10-01",
+  "grid_cell_degrees": 5,
+  "daily_grid_rows": 129226,
+  "map_sample_rows": 30000,
+  "model": "IsolationForest",
+  "model_training_samples": 60000,
+  "features": [
+    "hotspot_count",
+    "frp_sum",
+    "frp_mean",
+    "brightness_mean",
+    "confidence_mean",
+    "night_ratio",
+    "month_sin",
+    "month_cos"
+  ],
+  "training_note": "Unsupervised Isolation Forest retrained from NASA FIRMS VIIRS/S-NPP daily 5-degree cell-day aggregates. This is anomaly screening, not MODIS-to-VIIRS calibration.",
+  "model_estimators": 200,
+  "model_contamination": 0.04,
+  "anomaly_threshold": 80,
+  "source_provider": "NASA Earthdata / LANCE FIRMS",
+  "source_product": "VIIRS 375 m active fire, Suomi-NPP (SNPP)",
+  "source_url": "https://firms.modaps.eosdis.nasa.gov/download/",
+  "modis_source_required": true,
+  "modis_dataset_included": false
+}
